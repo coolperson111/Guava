@@ -1,4 +1,4 @@
-# Guava
+# Guava 🍐
 
 In light of the ongoing strike among cab drivers this semester, we have keenly observed the challenges that many individuals face in securing transportation for their everyday needs such as shopping for essentials or visiting the bank. It is with this understanding that we are excited to introduce our innovative solution: a cutting-edge app designed to seamlessly connect drivers and customers.
 
