@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "83436503872",
+    "project_id": "guava-cabs",
+    "storage_bucket": "guava-cabs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:83436503872:android:ff2ab5d029744b3b3e70a5",
+        "android_client_info": {
+          "package_name": "com.malharbhise.guava_passengers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXKnjbmpeIQtIdeR94zf0Kd-dnCAeH1bo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
