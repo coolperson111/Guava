@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "314468748171",
+    "firebase_url": "https://guava-fd51d-default-rtdb.firebaseio.com",
+    "project_id": "guava-fd51d",
+    "storage_bucket": "guava-fd51d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314468748171:android:d7aa2994e5a47957eafd8e",
+        "android_client_info": {
+          "package_name": "com.example.guava_drivers_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKwATEI8TBufdp6r26BD_t38LdjBjM5ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314468748171:android:2211daddf683640feafd8e",
+        "android_client_info": {
+          "package_name": "com.malharbhise.guavapassengerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKwATEI8TBufdp6r26BD_t38LdjBjM5ks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

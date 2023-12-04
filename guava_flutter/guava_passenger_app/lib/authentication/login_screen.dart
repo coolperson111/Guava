@@ -1,8 +1,18 @@
+//import 'dart:js';
+//import 'dart:js';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:guava_passenger_app/authentication/signup_screen.dart';
+import 'package:guava_passenger_app/methods/common_methods.dart';
+import 'package:guava_passenger_app/pages/home_page.dart';
+import 'package:guava_passenger_app/widgets/loading_dialog.dart';
+import '../global/global_var.dart';
+import '../methods/common_methods.dart';
+import '../widgets/loading_dialog.dart';
 
 class LogInScreen extends StatefulWidget {
-  const LogInScreen ({super.key});
+  const LogInScreen({super.key});
 
   @override
   State<LogInScreen> createState() => _LogInScreenState();
@@ -11,6 +21,66 @@ class LogInScreen extends StatefulWidget {
 class _LogInScreenState extends State<LogInScreen> {
   TextEditingController emailtextEditingController = TextEditingController();
   TextEditingController passwordtextEditingController = TextEditingController();
+  CommonMethods cMethods = CommonMethods();
+
+
+  checkNetwork() {
+    cMethods.checkConnectivity(context);
+    signInFormValidation();
+  }
+
+  signInFormValidation() {
+       if (!emailtextEditingController.text.contains("@")) {
+        cMethods.displaySnackBar("Invalid Email", context);
+      } else if (passwordtextEditingController.text.trim().length < 6) {
+        cMethods.displaySnackBar("Password must have atleast 6 characters", context);
+      }
+      else {
+        signInUser();
+      }
+  }
+
+  signInUser() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext) => LoadingDialog(messageText: "Allowing you to login..."),
+    );
+    final User? userFirebase = (
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailtextEditingController.text.trim(),
+        password: passwordtextEditingController.text.trim(),
+      ).catchError((errorMsg)
+      {
+        Navigator.pop(context);
+        cMethods.displaySnackBar(errorMsg.toString(),context);
+      })
+    ).user;
+
+    if(!context.mounted) return;
+    Navigator.pop(context);
+
+
+    if(userFirebase != null) {
+      DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase.uid);
+      usersRef.once().then((snap)
+      {
+        if(snap.snapshot.value != null) {
+          if((snap.snapshot.value as Map)["blockStatus"] == "no") {
+            userName = (snap.snapshot.value as Map)["name"];
+            Navigator.push(context, MaterialPageRoute(builder: (c)=> HomePage()));
+          } else {
+            FirebaseAuth.instance.signOut();
+            cMethods.displaySnackBar("You are blocked", context);
+          }
+        }
+        else {
+          FirebaseAuth.instance.signOut();
+          cMethods.displaySnackBar("Your records do not exist", context);
+        }
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +157,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           ElevatedButton(
                               onPressed: ()
                               {
-
+                                checkNetwork();
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.purple,

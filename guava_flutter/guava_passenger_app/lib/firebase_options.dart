@@ -54,6 +54,7 @@ class DefaultFirebaseOptions {
     appId: '1:314468748171:android:2211daddf683640feafd8e',
     messagingSenderId: '314468748171',
     projectId: 'guava-fd51d',
+    databaseURL: 'https://guava-fd51d-default-rtdb.firebaseio.com',
     storageBucket: 'guava-fd51d.appspot.com',
   );
 
@@ -62,6 +63,7 @@ class DefaultFirebaseOptions {
     appId: '1:314468748171:ios:352ce465d7763ceaeafd8e',
     messagingSenderId: '314468748171',
     projectId: 'guava-fd51d',
+    databaseURL: 'https://guava-fd51d-default-rtdb.firebaseio.com',
     storageBucket: 'guava-fd51d.appspot.com',
     iosBundleId: 'com.example.guavaPassengerApp',
   );

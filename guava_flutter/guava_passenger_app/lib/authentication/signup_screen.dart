@@ -1,6 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:guava_passenger_app/authentication/login_screen.dart';
 import 'package:guava_passenger_app/methods/common_methods.dart';
+import 'package:guava_passenger_app/pages/home_page.dart';
+import 'package:guava_passenger_app/widgets/loading_dialog.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -18,9 +23,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   checkNetwork() {
     cMethods.checkConnectivity(context);
-    signUpFormValidation();
-  }
+    if(imageFile != null)//image validation
+      {
+        signUpFormValidation();
+    }
+    else
+      {
 
+      }
+
+  }
+uploadImageToStorage() async
+{
+  String imageIDName = DateTime.now().millisecondsSinceEpoch.toString();
+  Reference referenceImage = FirebaseStorage.instance.ref().child("images").child(imageIDName)
+}
   signUpFormValidation() {
     if (userNametextEditingController.text.trim().length < 4) {
       cMethods.displaySnackBar("Name must be >4 characters", context);
@@ -30,9 +47,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
       cMethods.displaySnackBar("Invalid Email", context);
     } else if (passwordtextEditingController.text.trim().length < 6) {
       cMethods.displaySnackBar("Password must have atleast 6 characters", context);
+    }else if (vehicleModelTextEditingController.text.trim().isEmpty) {
+      cMethods.displaySnackBar("Write Car Model", context);
+    }else if (vehicleColorTextEditingController.text.trim().isEmpty) {
+      cMethods.displaySnackBar("Write Car Color", context);
+    }else if (vehicleNUmberTextEditingController.text.trim().isEmpty) {
+      cMethods.displaySnackBar("Number", context);
+    }
+    else
+    {
+      uploadImageToStorage()
+
     }
   }
+   registerNewUser() async
+   {
+     showDialog(
+     context:context,
+     barrierDismissible: false,
+     builder:(BuildContext context)=> const LoadingDialog(messageText: "Registering your Account..."),
+     );
+     final User? userFirebase = (
+     await FirebaseAuth.instance.createUserWithEmailAndPassword(
+       email: emailtextEditingController.text.trim(),
+       password: passwordtextEditingController.text.trim(),
+     ).catchError((errorMsg)
+     { cMethods.displaySnackBar(errorMsg.toString(),context);
+     })
+     ).user;
+     if(!context.mounted) return;
+     Navigator.pop(context);
 
+     DatabaseReference usersRef = FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
+     Map userDataMap=
+         {
+           "name":userNametextEditingController.text.trim(),
+           "email":emailtextEditingController.text.trim(),
+           "phone":phonetextEditingController.text.trim(),
+           "id": userFirebase.uid,
+           "blockStatus": "no",
+         };
+         usersRef.set(userDataMap);
+
+         Navigator.push(context, MaterialPageRoute(builder:(c)=> HomePage()));
+
+   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
